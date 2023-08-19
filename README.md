@@ -18,10 +18,17 @@ python -m pip install cookiecutter
 
 ### Generate the project
 
-Run the cookiecutter and follow the instructions
+Clone the cookiecutter, execute it and follow the instructions
 
 ```shell
-cookiecutter gh:aboucaud/checklist-template
+git clone https://github.com/aboucaud/checklist-template
+cookiecutter checklist-template
+```
+
+After running it once, the template is cached in your system (probably under `~/.cookiecutters`). Next time you want to use it, only execute the second line from anywhere on your system
+
+```shell
+cookiecutter checklist-template
 ```
 
 ## Adapt the checklist
