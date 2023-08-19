@@ -1,0 +1,9 @@
+{
+    "template": [
+        "GitHub <github.com> (./github)",
+        "GitLab <gitlab.in2p3.fr> (./gitlab)"
+    ],
+    "__prompts__": {
+        "template": "Select the platform on which you will host the checklist:"
+    }
+}

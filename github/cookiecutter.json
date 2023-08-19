@@ -1,0 +1,13 @@
+{
+    "project_name": "My Project",
+    "project_slug": "{{ cookiecutter.project_name | slugify }}",
+    "project_title": "Checklist for XXX",
+    "repo_owner": "github_username",
+    "project_url": "https://{{ cookiecutter.repo_owner }}.github.io/{{ cookiecutter.project_slug }}",
+    "__prompts__": {
+        "project_name": "Select a name for your checklist project:",
+        "project_title": "Select the title displayed on the front page:",
+        "repo_owner": "GitHub username or organization hosting the project:",
+        "project_url": "Leave default URL unless you are using a custom URL:"
+    }
+}

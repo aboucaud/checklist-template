@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>{{ cookiecutter.project_title }}</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
+  <style>
+    html {
+      font-family: Helvetica, Arial, sans-serif;
+      color: #333;
+    }
+
+    a:any-link {
+      color: #1f77b4;
+    }
+
+    #page {
+      max-width: 1000px;
+      margin: 16px auto;
+      padding: 0 12px 200px 12px;
+    }
+
+    pre {
+      display: inline;
+      white-space: normal;
+      size: 95%;
+      margin: 0 6px;
+    }
+
+    input[type=checkbox] {
+      zoom: 1.8;
+    }
+
+    .progress-container {
+      width: 100%;
+      height: 30px;
+      background-color: #EEE;
+      margin: 30px 0;
+      position: sticky;
+      top: -1px;
+    }
+
+    #progress {
+      width: 0.5%;
+      height: 100%;
+      float: left;
+      background-color: #66B66C;
+    }
+
+    #progress-text {
+      text-align: right;
+      color: #fff;
+      padding: 0.35em 0.3em 0 0;
+    }
+
+    .item {
+      margin: 20px 0;
+      line-height: 1.2;
+      font-size: 120%;
+      display: flex;
+    }
+
+    .box {
+      margin-right: 12px;
+      vertical-align: top;
+    }
+
+    .text {
+      vertical-align: top;
+      flex-grow: 1;
+    }
+
+    .done {
+      text-decoration: line-through;
+      color: #999;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 72px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="page">
+    <h1>{{ cookiecutter.project_title }}</h1>
+    <h3><a href="{{ cookiecutter.project_url }}">{{ cookiecutter.project_url }}</a></h3>
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <div class="progress-container">
+      <div id="progress">
+        <div id="progress-text"></div>
+      </div>
+    </div>
+
+    <h2>Section 1</h2>
+
+    <div class="item">
+      <div class="box">
+        <input type="checkbox">
+      </div>
+      <div class="text">
+        Item 1
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="box">
+        <input type="checkbox">
+      </div>
+      <div class="text">
+        Item 2
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="box">
+        <input type="checkbox">
+      </div>
+      <div class="text">
+        Item 3
+      </div>
+    </div>
+
+    <h2>Section 2</h2>
+
+    <div class="item">
+      <div class="box">
+        <input type="checkbox">
+      </div>
+      <div class="text">
+        Item 1
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="box">
+        <input type="checkbox">
+      </div>
+      <div class="text">
+        Item 2
+        <ul>
+          <li> This </li>
+          <li> That </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer">
+
+      <p>This site uses cookies to keep track your checklist progress. The data are stored in your browser locally
+        only.</p>
+      <p>Checklist cookiecutter template written by <a href="https://github.com/aboucaud">Alexandre Boucaud</a>, taking
+        inspiration from <a href="https://github.com/LSSTDESC/pre-meeting-checklist" title="pre-meeting-checklist">DESC
+          pre-meeting-checklist</a>.</p>
+      <p>If you have questions or suggestions about this page, please
+        <a href="https://github.com/aboucaud/checklist-template/issues" title="link to GitHub">open an issue</a>.
+      </p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script>
+      const cookie_key = "{{ cookiecutter.project_slug | replace('-', '_') }}_checklist";
+      const project_name = "{{ cookiecutter.project_slug }}";
+
+      const get_progress = function () {
+        return (0.5 + 99.5 / $("input").length * $("input:checked").length);
+      }
+
+      const display_progress = function (animate) {
+        var p = get_progress();
+        if (animate) $("#progress").animate({ width: p + "%" }, 500);
+        else $("#progress").css("width", p + "%");
+        if (p > 1) $("#progress-text").text(Math.floor(p) + "%");
+        else $("#progress-text").text("");
+      }
+
+      $("input").change(function () {
+        var target = $("div.text").eq($("input").index(this));
+        if (this.checked) target.addClass("done");
+        else target.removeClass("done");
+        display_progress(1);
+        var record = $("input").map(function () { return this.checked ? 1 : 0; }).toArray().join("");
+        Cookies.set(cookie_key, record, { expires: 21, path: "/" + project_name + "/" });
+      });
+
+      var read_cookie = function () {
+        var record = Cookies.get(cookie_key);
+        if (record != undefined) {
+          record.split('').forEach((c, i) => {
+            if (c == "1") {
+              $("input").eq(i).attr("checked", true);
+              $("div.text").eq(i).addClass("done");
+            }
+          });
+        }
+        else {
+          $("input").attr("checked", false);
+        }
+        display_progress();
+      }
+      read_cookie();
+    </script>
+
+</body>
+
+</html>
